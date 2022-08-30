@@ -1,5 +1,5 @@
 import React from 'react'
-import { TouchableOpacity, StyleSheet } from 'react-native'
+import { TouchableOpacity, StyleSheet, View } from 'react-native'
 
 import COLORS from '../assets/colors/colors'
 
@@ -19,8 +19,12 @@ export default function IconContainer(props) {
     })
 
     return (
-        <TouchableOpacity style={[styles.iconContainer, props.style]} onPress={onPress}>
+        onPress
+        ? <TouchableOpacity style={[styles.iconContainer, props.style]} onPress={onPress}>
             {props.children}
         </TouchableOpacity>
+        : <View style={[styles.iconContainer, props.style]}>
+            {props.children}
+        </View>
     )
 }

@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     },
     recipeInfo: {
         paddingBottom: 10,
-        borderBottomWidth: 1,
+        borderBottomWidth: 0.5,
         borderColor: COLORS.lightBlue,
         flexDirection: 'row', 
         justifyContent: 'space-between'

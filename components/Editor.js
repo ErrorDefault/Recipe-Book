@@ -11,11 +11,13 @@ import IconContainer from './IconContainer'
 import Counter from './Counter'
 import TextInputList from './TextInputList'
 import SetTimeModal from './SetTimeModal'
+import ChecklistModal from './ChecklistModal'
 import Button from './Button'
 
 import { formatTime } from '../functions/Utils'
 
 import COLORS from '../assets/colors/colors'
+import RESTRICTIONS from '../assets/values/restrictions'
 
 const options = {
     mediaType: 'photo',
@@ -48,14 +50,16 @@ export default function Editor(props) {
         setCookMinutes,
         cookHours,
         setCookHours,
+        restrictions,
+        setRestrictions,
         callback,
         callbackText,
         scrollOffsetY=0
     } = props
 
     const [prepModalVisible, setPrepModalVisible] = React.useState(false)
-
     const [cookModalVisible, setCookModalVisible] = React.useState(false)
+    const [restrictionsModalVisible, setRestrictionsModalVisible] = React.useState(false)
 
     const [showMenu, setShowMenu] = React.useState(false)
     const [menuAnchor, setMenuAnchor] = React.useState({ x: 0, y: 0 })
@@ -264,6 +268,29 @@ export default function Editor(props) {
                     setMinutes={setCookMinutes}
                     title="Set Cook Time"
                 /> 
+
+                <AppHeaderText style={styles.text}>Dietary Restrictions</AppHeaderText>
+                <TouchableOpacity
+                    style={[styles.sectionEnd, {marginTop: 0, alignSelf: 'flex-start'}]}
+                    onPress={() => setRestrictionsModalVisible(true)}
+                >
+                    <AppEmphasisText>
+                        {
+                            restrictions.length === 0 
+                            ? 'Set restrictions'
+                            : restrictions.join(', ')
+                        }
+                    </AppEmphasisText>
+                </TouchableOpacity>
+
+                <ChecklistModal
+                    visible={restrictionsModalVisible}
+                    setVisible={setRestrictionsModalVisible}
+                    data={RESTRICTIONS}
+                    selected={restrictions}
+                    setSelected={setRestrictions}
+                    title={'Set Dietary Restrictions'}
+                />
 
                 <Button style={{marginVertical: 5}} action={callback} text={callbackText}/>
                 

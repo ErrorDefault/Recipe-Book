@@ -46,12 +46,12 @@ Made with Recipe Book
         navigation.setOptions({
             headerLeft: () => (
                 <BackButton
-                    backAction={() => navigation.goBack()}
+                    action={() => navigation.goBack()}
                 />
             ),
             headerRight: () => (
                 <ShareButton
-                    shareAction={() => {
+                    action={() => {
                         
                         Share.open(
                             recipe.imageUri

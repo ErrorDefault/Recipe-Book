@@ -18,8 +18,10 @@ import RecipeCard from '../components/RecipeCard'
 import IconContainer from '../components/IconContainer'
 import BackupModal from '../components/BackupModal'
 import PopupMenu from '../components/PopupMenu'
+import ChecklistModal from '../components/ChecklistModal'
 
 import COLORS from '../assets/colors/colors'
+import RESTRICTIONS from '../assets/values/restrictions'
 
 export default function MyRecipesScreen({navigation, addRecipe, editRecipe, deleteRecipe, restoreBackup}) {
     const recipeData = React.useContext(Context)
@@ -47,7 +49,7 @@ export default function MyRecipesScreen({navigation, addRecipe, editRecipe, dele
         navigation.setOptions({
             headerRight: () => (
                 <BackupButton
-                    backupAction={() => {
+                    action={() => {
                         setOpen(false)
                         setBackupModalVisible(true)
                     }}
@@ -59,6 +61,23 @@ export default function MyRecipesScreen({navigation, addRecipe, editRecipe, dele
     const [backupRecipeData, setBackupRecipeData] = React.useState([])
     const [backupModalVisible, setBackupModalVisible] = React.useState(false)
     const [backupAlertVisible, setBackupAlertVisible] = React.useState(false)
+
+    const [restrictionsModalVisible, setRestrictionsModalVisible] = React.useState(false)
+    const [filters, setFilters] = React.useState([])
+
+    const filterSearch = (data) => (
+        data.filter(recipe => 
+            recipe.name.toLowerCase().includes(searchKey.trim().toLowerCase()) && filters.every(filter => (recipe.restrictions ? recipe.restrictions : []).includes(filter))
+        )
+    )
+
+    const sortSearch = (data, sortBy) => (
+        sortBy === 'old'
+        ? data
+        : value === 'new'
+            ? data.reverse()
+            : data.sort(compareRecipeNames)
+    )
 
     const compareRecipeNames = (a, b) => {
         if(a.name.toLowerCase() < b.name.toLowerCase())
@@ -145,16 +164,27 @@ export default function MyRecipesScreen({navigation, addRecipe, editRecipe, dele
                             onFocus={() => setOpen(false)}
                             onPressIn={() => setOpen(false)}
                         />
-                        <View
+                        <IconContainer
                             style={styles.searchIcon}
-                            onPress={null}
+                            size={45}
                         >
                             <IonIcon
                                 name={'search'}
                                 size={20}
                                 color={COLORS.lightBlue}
                             />
-                        </View>
+                        </IconContainer>
+                        <IconContainer
+                            style={styles.filterIcon}
+                            size={45}
+                            onPress={() => setRestrictionsModalVisible(true)}
+                        >
+                            <IonIcon
+                                name={'ios-filter'}
+                                size={20}
+                                color={filters.length > 0 ? COLORS.red : COLORS.lightBlue}
+                            />
+                        </IconContainer>
                         <View style={styles.dropDownContainer}>
                             <DropDownPicker
                                 open={open}
@@ -163,11 +193,11 @@ export default function MyRecipesScreen({navigation, addRecipe, editRecipe, dele
                                 setOpen={setOpen}
                                 setValue={setValue}
                                 setItems={setItems}
-                                style={{borderWidth: 0, borderRadius: 25, borderColor: COLORS.lightBlue}}
+                                style={{borderWidth: 0}}
                                 textStyle={{fontSize: 15, fontFamily: 'Inter-Regular', color: COLORS.darkBlue}}
                                 disableBorderRadius={true}
                                 closeOnBackPressed={true}
-                                dropDownContainerStyle={{borderWidth: 0, elevation: 5}}
+                                dropDownContainerStyle={{borderWidth: 0, borderBottomLeftRadius: 10, borderBottomRightRadius: 10, elevation: 5}}
                                 arrowIconStyle={{tintColor: COLORS.darkBlue}}
                                 tickIconStyle={{tintColor: COLORS.darkBlue}}
                                 closeIconStyle={{tintColor: COLORS.darkBlue}}
@@ -175,13 +205,7 @@ export default function MyRecipesScreen({navigation, addRecipe, editRecipe, dele
                         </View>
                         <FlatList
                             style={styles.list}
-                            data={
-                                value === 'old'
-                                ? recipeData.filter(recipe => recipe.name.toLowerCase().includes(searchKey.trim().toLowerCase()))
-                                : value === 'new'
-                                    ? [...recipeData.filter(recipe => recipe.name.toLowerCase().includes(searchKey.trim().toLowerCase()))].reverse()
-                                    : [...recipeData.filter(recipe => recipe.name.toLowerCase().includes(searchKey.trim().toLowerCase()))].sort(compareRecipeNames)
-                            }
+                            data={sortSearch(filterSearch(recipeData), value)}
                             renderItem={renderItem}
                             keyExtractor={item => item.id}
                             horizontal={false}
@@ -301,6 +325,16 @@ export default function MyRecipesScreen({navigation, addRecipe, editRecipe, dele
                         setBackupAlertVisible(false)
                     }}
                 />
+
+                <ChecklistModal
+                    visible={restrictionsModalVisible}
+                    setVisible={setRestrictionsModalVisible}
+                    data={RESTRICTIONS}
+                    selected={filters}
+                    setSelected={setFilters}
+                    title='Filters'
+                    buttonText={'Apply'}
+                />
             </View>
         </Provider>
     )
@@ -325,8 +359,8 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         borderColor: COLORS.lightBlue,
         backgroundColor: COLORS.transparent,
-        padding: 8,
-        paddingLeft: 40,
+        paddingVertical: 8,
+        paddingHorizontal: 40,
         color: COLORS.darkBlue,
         fontSize: 15,
         fontFamily: 'Inter-Regular'
@@ -335,10 +369,12 @@ const styles = StyleSheet.create({
         position: 'absolute', 
         left: windowWidth / 20, 
         top: windowWidth / 20,
-        height: 45,
-        width: 45,
-        justifyContent: 'center',
-        alignItems: 'center',
+        backgroundColor: COLORS.transparent
+    },
+    filterIcon: {
+        position: 'absolute', 
+        right: windowWidth / 20, 
+        top: windowWidth / 20,
         backgroundColor: COLORS.transparent
     },
     dropDownContainer: {

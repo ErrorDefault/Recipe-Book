@@ -4,6 +4,7 @@ import { BackHandler, ScrollView, StyleSheet, View } from 'react-native'
 import { useFocusEffect } from '@react-navigation/native'
 
 import BackButton from '../components/BackButton'
+import CheckButton from '../components/CheckButton'
 import Editor from '../components/Editor'
 import PopupMenu from '../components/PopupMenu'
 
@@ -20,18 +21,9 @@ export default function RecipeMakerScreen({route, navigation}) {
     const [prepMinutes, setPrepMinutes] = React.useState(0)
     const [cookHours, setCookHours] = React.useState(0)
     const [cookMinutes, setCookMinutes] = React.useState(0)
+    const [restrictions, setRestrictions] = React.useState([])
 
     const [alertVisible, setAlertVisible] = React.useState(false)
-    
-    React.useLayoutEffect(() => {
-        navigation.setOptions({
-            headerLeft: () => (
-                <BackButton
-                    backAction={() => setAlertVisible(true)}
-                />
-            )
-        })
-    }, [navigation])
 
     useFocusEffect(
         React.useCallback(() => {
@@ -59,9 +51,22 @@ export default function RecipeMakerScreen({route, navigation}) {
             prepMinutes: prepMinutes,
             cookHours: cookHours,
             cookMinutes: cookMinutes,
+            restrictions: restrictions
         })
         navigation.goBack()
     }
+
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerLeft: () => (<BackButton action={() => setAlertVisible(true)}/>)
+        })
+    }, [navigation])
+
+    React.useEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (<CheckButton action={callback}/>)
+        })
+    }, [callback])
 
     const [scrollOffsetY, setScrollOffsetY] = React.useState(0)
 
@@ -95,6 +100,8 @@ export default function RecipeMakerScreen({route, navigation}) {
                     setCookHours={setCookHours}
                     cookMinutes={cookMinutes}
                     setCookMinutes={setCookMinutes}
+                    restrictions={restrictions}
+                    setRestrictions={setRestrictions}
                     callback={callback}
                     callbackText="Save Recipe"
                     scrollOffsetY={scrollOffsetY}

@@ -10,7 +10,7 @@ import COLORS from '../assets/colors/colors'
 export default function BackupButton(props) {
     return (
         <IconContainer
-            onPress={props.backupAction}
+            onPress={props.action}
             style={styles.iconContainer}
             size={30}
         >

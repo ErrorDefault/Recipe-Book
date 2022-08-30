@@ -10,7 +10,7 @@ import COLORS from '../assets/colors/colors'
 export default function ShareButton(props) {
     return (
         <IconContainer
-            onPress={props.shareAction}
+            onPress={props.action}
             style={styles.iconContainer}
             size={30}
         >

@@ -20,8 +20,10 @@ export default function SetTimeModal(props) {
     const [tempMinutes, setTempMinutes] = React.useState(minutes)
 
     React.useEffect(() => {
-        setTempHours(hours)
-        setTempMinutes(minutes)
+        if(visible) {
+            setTempHours(hours)
+            setTempMinutes(minutes)
+        }
     }, [visible])
 
     return (
@@ -35,7 +37,8 @@ export default function SetTimeModal(props) {
                 <Pressable 
                     style={styles.topView}
                     onPress={() => setVisible(false)}
-                ></Pressable>
+                >
+                </Pressable>
                 <View style={styles.bottomView}>
                     <View style={{marginHorizontal: '5%'}}>
                         <View style={styles.titleContainer}>

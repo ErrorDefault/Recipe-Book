@@ -4,6 +4,7 @@ import { BackHandler, ScrollView, StyleSheet, View } from 'react-native'
 import { useFocusEffect } from '@react-navigation/native'
 
 import BackButton from '../components/BackButton'
+import CheckButton from '../components/CheckButton'
 import Editor from '../components/Editor'
 import PopupMenu from '../components/PopupMenu'
 
@@ -20,6 +21,7 @@ export default function RecipeEditorScreen({route, navigation}) {
     const [prepMinutes, setPrepMinutes] = React.useState(route.params.prepMinutes)
     const [cookHours, setCookHours] = React.useState(route.params.cookHours)
     const [cookMinutes, setCookMinutes] = React.useState(route.params.cookMinutes)
+    const [restrictions, setRestrictions] = React.useState(route.params.restrictions ? route.params.restrictions : [])
 
     const [alertVisible, setAlertVisible] = React.useState(false)
 
@@ -35,24 +37,10 @@ export default function RecipeEditorScreen({route, navigation}) {
             prepHours === route.params.prepHours &&
             prepMinutes === route.params.prepMinutes &&
             cookHours === route.params.cookHours &&
-            cookMinutes === route.params.cookMinutes
+            cookMinutes === route.params.cookMinutes &&
+            JSON.stringify(restrictions) === JSON.stringify(route.params.restrictions ? route.params.restrictions : [])
         )
     )
-
-    React.useLayoutEffect(() => {
-        navigation.setOptions({
-            headerLeft: () => (
-                <BackButton
-                    backAction={() => {
-                        if (hasUnsavedChanges())
-                            setAlertVisible(true)
-                        else
-                            navigation.goBack()
-                    }}
-                />
-            )
-        })
-    }, [navigation, hasUnsavedChanges()])
 
     useFocusEffect(
         React.useCallback(() => {
@@ -82,10 +70,32 @@ export default function RecipeEditorScreen({route, navigation}) {
             prepHours: prepHours,
             prepMinutes: prepMinutes,
             cookHours: cookHours,
-            cookMinutes: cookMinutes
+            cookMinutes: cookMinutes,
+            restrictions: restrictions
         })
         navigation.goBack()
     }
+
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerLeft: () => (
+                <BackButton
+                    action={() => {
+                        if (hasUnsavedChanges())
+                            setAlertVisible(true)
+                        else
+                            navigation.goBack()
+                    }}
+                />
+            )
+        })
+    }, [navigation, hasUnsavedChanges()])
+
+    React.useEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (<CheckButton action={callback}/>)
+        })
+    }, [callback])
 
     const [scrollOffsetY, setScrollOffsetY] = React.useState(0)
 
@@ -119,6 +129,8 @@ export default function RecipeEditorScreen({route, navigation}) {
                     setCookHours={setCookHours}
                     cookMinutes={cookMinutes}
                     setCookMinutes={setCookMinutes}
+                    restrictions={restrictions}
+                    setRestrictions={setRestrictions}
                     callback={callback}
                     callbackText="Save Changes"
                     scrollOffsetY={scrollOffsetY}

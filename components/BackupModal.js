@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal, Pressable, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Modal, Pressable, StyleSheet, View } from 'react-native'
 
 import AntIcon from 'react-native-vector-icons/AntDesign'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -24,9 +24,10 @@ export default function BackupModal(props) {
                 <Pressable 
                     style={styles.topView}
                     onPress={() => setVisible(false)}
-                ></Pressable>
+                >
+                </Pressable>
                 <View style={styles.bottomView}>
-                    <View style={{marginHorizontal: '5%'}}>
+                    <>
                         <View style={styles.titleContainer}>
                             <AppHeaderText style={styles.title}>Export/Import Backup</AppHeaderText>
                             <IconContainer 
@@ -41,8 +42,11 @@ export default function BackupModal(props) {
                                 />
                             </IconContainer>
                         </View>
-                        <TouchableOpacity
+                        <Pressable
                             onPress={exportAction}
+                            android_ripple={{
+                                color: COLORS.lightGrey,
+                            }}
                         >
                             <View style={styles.section}> 
                                 <IconContainer 
@@ -57,9 +61,12 @@ export default function BackupModal(props) {
                                 </IconContainer>
                                 <AppText>Export backup</AppText>
                             </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity
+                        </Pressable>
+                        <Pressable
                             onPress={importAction}
+                            android_ripple={{
+                                color: COLORS.lightGrey,
+                            }}
                         >
                             <View style={styles.section}> 
                                 <IconContainer 
@@ -74,8 +81,8 @@ export default function BackupModal(props) {
                                 </IconContainer>
                                 <AppText>Import backup</AppText>
                             </View>
-                        </TouchableOpacity>
-                    </View>
+                        </Pressable>
+                    </>
                 </View>
             </Modal>
         </>
@@ -95,17 +102,20 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.white
     },
     titleContainer: {
+        marginHorizontal: '5%',
         marginTop: 5,
         height: 50, 
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        
     },
     title: {
         marginTop: 5,
         flex: 1
     },
     section: {
+        marginHorizontal: '5%',
         width: '100%',
         height: 50,
         flexDirection: 'row',
