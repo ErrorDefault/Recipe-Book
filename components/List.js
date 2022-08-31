@@ -5,7 +5,7 @@ import AppText from './AppText'
 import AppHeaderText from './AppHeaderText'
 
 export default function List(props) {
-    const {data = [], listTitle = "", numbered = false} = props
+    const {data = [], numbered = false} = props
     const dataList = data.map((item, index) => {
         return (
             numbered
@@ -15,7 +15,6 @@ export default function List(props) {
     })
     return (
         <View style={[styles.container, props.style]}>
-            <AppHeaderText style={styles.title}>{listTitle}</AppHeaderText>
             <View style={styles.list}>
                 {dataList}
             </View>
@@ -28,7 +27,7 @@ const styles = StyleSheet.create({
 
     },
     list: {
-        marginLeft: 10
+        
     },
     title: {
         lineHeight: 40
