@@ -51,7 +51,7 @@ export default function Recipe(props) {
                 : <></>
             }  
 
-            <Section>
+            <Section style={{marginTop: 0}}>
                 <View style={styles.sectionBar}>
                     <Pressable 
                         style={[styles.sectionBarHeader, 
@@ -59,6 +59,9 @@ export default function Recipe(props) {
                             ? styles.sectionBarHeaderSelected 
                             : styles.sectionBarHeaderNotSelected
                         ]}
+                        android_ripple={{
+                            color: COLORS.lightGrey,
+                        }}
                         onPress={() => setSelectedSection('ingredients')}
                     >
                         <AppEmphasisText 
@@ -73,6 +76,9 @@ export default function Recipe(props) {
                             ? styles.sectionBarHeaderSelected 
                             : styles.sectionBarHeaderNotSelected
                         ]}
+                        android_ripple={{
+                            color: COLORS.lightGrey,
+                        }}
                         onPress={() => setSelectedSection('instructions')}
                     >
                         <AppEmphasisText 
@@ -87,6 +93,9 @@ export default function Recipe(props) {
                             ? styles.sectionBarHeaderSelected 
                             : styles.sectionBarHeaderNotSelected
                         ]}
+                        android_ripple={{
+                            color: COLORS.lightGrey,
+                        }}
                         onPress={() => setSelectedSection('cookware')}
                     >
                         <AppEmphasisText 
@@ -137,6 +146,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     sectionBarHeader: {
+        paddingTop: 10,
         paddingBottom: 10,
         maxWidth: '33.33%',
         flex: 1,
