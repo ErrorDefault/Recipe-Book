@@ -23,6 +23,24 @@ import ChecklistModal from '../components/ChecklistModal'
 import COLORS from '../assets/colors/colors'
 import RESTRICTIONS from '../assets/values/restrictions'
 
+const isValidRecipeData = (recipeData) => (
+    Array.isArray(recipeData) &&
+    recipeData.every(recipe => (
+        recipe.hasOwnProperty('name') && typeof recipe.name === 'string' &&
+        recipe.hasOwnProperty('description') && typeof recipe.description === 'string' &&
+        recipe.hasOwnProperty('servings') && typeof recipe.servings === 'number' && 0 <= recipe.servings && recipe.servings <= 99 &&
+        recipe.hasOwnProperty('imageUri') && typeof recipe.imageUri === 'string' &&
+        recipe.hasOwnProperty('ingredients') && Array.isArray(recipe.ingredients) && recipe.ingredients.every(ingredient => (typeof ingredient === 'string')) &&
+        recipe.hasOwnProperty('steps') && Array.isArray(recipe.steps) && recipe.steps.every(step => (typeof step === 'string')) &&
+        recipe.hasOwnProperty('cookware') && Array.isArray(recipe.cookware) && recipe.cookware.every(item => (typeof item === 'string')) &&
+        recipe.hasOwnProperty('prepHours') && typeof recipe.prepHours === 'number' && 0 <= recipe.prepHours && recipe.prepHours <= 23 &&
+        recipe.hasOwnProperty('prepMinutes') && typeof recipe.prepMinutes === 'number' && 0 <= recipe.prepMinutes && recipe.prepMinutes <= 59 &&
+        recipe.hasOwnProperty('cookHours') && typeof recipe.cookHours === 'number' && 0 <= recipe.cookHours && recipe.cookHours <= 23 &&
+        recipe.hasOwnProperty('cookMinutes') && typeof recipe.cookMinutes === 'number' && 0 <= recipe.cookMinutes && recipe.cookMinutes <= 59 &&
+        recipe.hasOwnProperty('restrictions') ? (Array.isArray(recipe.restrictions) && recipe.restrictions.every(restriction => (typeof restriction === 'string'))) : true
+    ))
+)
+
 export default function MyRecipesScreen({navigation, addRecipe, editRecipe, deleteRecipe, restoreBackup}) {
     const recipeData = React.useContext(Context)
 
@@ -299,11 +317,11 @@ export default function MyRecipesScreen({navigation, addRecipe, editRecipe, dele
                             RNFS.readFile(response.uri, 'base64')
                             .then((data) => {
                                 var readData = JSON.parse(base64.decode(data))
-                                if(readData.recipeData) {
+                                if(readData.hasOwnProperty('recipeData') && isValidRecipeData(readData.recipeData)) {
                                     setBackupRecipeData(readData.recipeData)
                                     setBackupAlertVisible(true)
                                 } else {
-                                    ToastAndroid.show('Invalid file format.', ToastAndroid.SHORT)
+                                    ToastAndroid.show('Invalid data.', ToastAndroid.SHORT)
                                 }
                             })
                             setBackupModalVisible(false)
