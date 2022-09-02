@@ -42,7 +42,7 @@ export default function PopupMenu(props) {
                             underlayColor={COLORS.white}
                             onPress={cancelAction}
                         >
-                            <View style={[styles.button, {backgroundColor: COLORS.white}]}>
+                            <View style={[styles.button, {backgroundColor: COLORS.lighterGrey}]}>
                                 <AppText style={[styles.buttonText, {color: COLORS.darkBlue}]}>{cancelText}</AppText>
                             </View>
                         </TouchableHighlight>
