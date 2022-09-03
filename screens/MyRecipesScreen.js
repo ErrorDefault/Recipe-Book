@@ -195,7 +195,10 @@ export default function MyRecipesScreen({navigation, addRecipe, editRecipe, dele
                         <IconContainer
                             style={styles.filterIcon}
                             size={45}
-                            onPress={() => setRestrictionsModalVisible(true)}
+                            onPress={() => {
+                                setOpen(false)
+                                setRestrictionsModalVisible(true)
+                            }}
                         >
                             <IonIcon
                                 name={'ios-filter'}
@@ -340,6 +343,7 @@ export default function MyRecipesScreen({navigation, addRecipe, editRecipe, dele
                     cancelAction={() => setBackupAlertVisible(false)}
                     confirmAction={() => {
                         restoreBackup(backupRecipeData)
+                        closeMenu()
                         setBackupAlertVisible(false)
                     }}
                 />
