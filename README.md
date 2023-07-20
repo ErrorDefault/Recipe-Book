@@ -1,4 +1,5 @@
-# Recipe-Book
+<img src="https://github.com/ErrorDefault/Recipe-Book/assets/36209276/6bc0e9fd-17ab-4818-a894-3006cf06fcb0" width="180">
+# Recipe Book
 A place to store all your favorite recipes. 
 
 Google Play Link: <a href="https://play.google.com/store/apps/details?id=com.errordefault.recipebook">https://play.google.com/store/apps/details?id=com.errordefault.recipebook</a>
