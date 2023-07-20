@@ -5,17 +5,12 @@ Google Play Link: <a href="https://play.google.com/store/apps/details?id=com.err
 
 FEATURES
 
-• Store and save all of your recipes on your local device
-
-• Add a photo to your recipes
-
-• Edit your recipes
-
-• Sort and filter your recipes to find what you need fast
-
-• Share your recipes with friends
-
-• Create a backup of your recipes so you never lose them
+- Store and save all of your recipes on your local device
+- Add a photo to your recipes
+- Edit your recipes
+- Sort and filter your recipes to find what you need fast
+- Share your recipes with friends
+- Create a backup of your recipes so you never lose them
 
 SCREENSHOTS
 <div style="display: flex; flex-direction: row;">
